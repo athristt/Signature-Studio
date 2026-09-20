@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skill Shikshya — Signature Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#1DA077;
+    --primary-dark:#157f5f;
+    --red:#C33241;
+    --yellow:#FFE400;
+    --ink:#1a1a2e;
+    --gray:#6b7280;
+    --line:#e7e9ec;
+    --bg:#f5f6f8;
+    --card:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Outfit',Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+  }
+  .topbar{
+    padding:28px 32px 20px;
+    max-width:1180px;
+    margin:0 auto;
+  }
+  .topbar .eyebrow{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--primary);
+    margin-bottom:6px;
+  }
+  .topbar h1{
+    margin:0;
+    font-size:26px;
+    font-weight:800;
+    letter-spacing:-0.4px;
+  }
+  .topbar p{
+    margin:6px 0 0;
+    color:var(--gray);
+    font-size:14px;
+  }
+  .layout{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px 60px;
+    display:grid;
+    grid-template-columns:1fr 360px;
+    gap:24px;
+    align-items:start;
+  }
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr;}
+  }
+
+  .preview-pane{
+    background:var(--card);
+    border-radius:16px;
+    border:1px solid var(--line);
+    padding:36px 24px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:20px;
+  }
+  .preview-frame{
+    width:100%;
+    max-width:430px;
+    background:#ffffff;
+    border:1px dashed var(--line);
+    border-radius:12px;
+    padding:28px 24px;
+  }
+  .preview-label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1.6px;
+    text-transform:uppercase;
+    color:var(--gray);
+    align-self:flex-start;
+  }
+  .actions{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  #copyStatus{
+    font-size:12.5px;
+    color:var(--primary);
+    font-weight:600;
+    min-height:16px;
+  }
+
+  .editor-pane{
+    background:var(--card);
+    border-radius:16px;
+    border:1px solid var(--line);
+    padding:26px 24px;
+  }
+  .editor-pane h2{
+    margin:0 0 4px;
+    font-size:16px;
+    font-weight:700;
+  }
+  .editor-pane .sub{
+    margin:0 0 20px;
+    font-size:12.5px;
+    color:var(--gray);
+  }
+  .field{
+    margin-bottom:16px;
+  }
+  .field label{
+    display:block;
+    font-size:12px;
+    font-weight:600;
+    color:var(--ink);
+    margin-bottom:6px;
+  }
+  .field input[type="text"],
+  .field input[type="tel"],
+  .field input[type="email"]{
+    width:100%;
+    padding:10px 12px;
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    font-family:'Outfit',Arial,sans-serif;
+    font-size:13.5px;
+    color:var(--ink);
+    background:#fcfcfd;
+    transition:border-color .15s ease;
+  }
+  .field input:focus{
+    outline:none;
+    border-color:var(--primary);
+    background:#fff;
+  }
+  .upload-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .upload-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:9px 14px;
+    border-radius:8px;
+    border:1.5px solid var(--line);
+    background:#fcfcfd;
+    font-family:'Outfit',Arial,sans-serif;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .upload-btn:hover{border-color:var(--primary); color:var(--primary);}
+  .upload-hint{font-size:11px; color:var(--gray);}
+  input[type="file"]{display:none;}
+
+  .btn-row{
+    display:flex;
+    gap:10px;
+    margin-top:22px;
+  }
+  button{
+    font-family:'Outfit',Arial,sans-serif;
+    cursor:pointer;
+    border:none;
+  }
+  .btn-primary{
+    flex:1;
+    background:var(--primary);
+    color:#fff;
+    font-size:13.5px;
+    font-weight:700;
+    padding:11px 14px;
+    border-radius:8px;
+    transition:background .15s ease;
+  }
+  .btn-primary:hover{background:var(--primary-dark);}
+  .btn-secondary{
+    flex:1;
+    background:transparent;
+    color:var(--gray);
+    font-size:13.5px;
+    font-weight:600;
+    padding:11px 14px;
+    border-radius:8px;
+    border:1.5px solid var(--line);
+  }
+  .btn-secondary:hover{border-color:var(--red); color:var(--red);}
+  .copy-btn{
+    background:var(--ink);
+    color:#fff;
+    font-size:13px;
+    font-weight:700;
+    padding:11px 20px;
+    border-radius:8px;
+  }
+  .copy-btn:hover{background:#000;}
+
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(20,20,30,0.55);
+    display:none; align-items:center; justify-content:center; z-index:50;
+    padding:20px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal-card{
+    background:#fff; border-radius:16px; padding:24px;
+    width:100%; max-width:340px; text-align:center;
+  }
+  .modal-card h3{margin:0 0 4px; font-size:16px; font-weight:700;}
+  .modal-card p{margin:0 0 18px; font-size:12.5px; color:var(--gray);}
+  .crop-stage{
+    width:260px; height:260px; margin:0 auto 16px;
+    position:relative; overflow:hidden; border-radius:50%;
+    background:#eee; cursor:grab; touch-action:none;
+    border:2px solid var(--line);
+  }
+  .crop-stage:active{cursor:grabbing;}
+  .crop-stage img{
+    position:absolute; left:0; top:0; user-select:none; pointer-events:none;
+  }
+  .zoom-row{
+    display:flex; align-items:center; gap:10px; margin-bottom:18px;
+  }
+  .zoom-row span{font-size:16px; color:var(--gray);}
+  .zoom-row input[type="range"]{flex:1; accent-color:var(--primary);}
+  .modal-btns{display:flex; gap:10px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="eyebrow">Skill Shikshya</div>
+  <h1>Signature Studio</h1>
+  <p>Fill in your details on the right, watch your signature update on the left, then copy it straight into Gmail.</p>
+</div>
+
+<div class="layout">
+
+  <div class="preview-pane">
+    <div class="preview-label">Live preview</div>
+    <div class="preview-frame">
+      <div id="sig-root"></div>
+    </div>
+    <div class="actions">
+      <button class="copy-btn" id="copyBtn">Copy signature</button>
+      <span id="copyStatus"></span>
+    </div>
+    <p style="font-size:11.5px; color:var(--gray); text-align:center; max-width:380px; margin:0;">
+      Paste directly into <strong>Gmail → Settings → See all settings → General → Signature</strong> (not a new compose window) for the most reliable result. If your photo doesn't appear after pasting, right-click it in the preview above to save it, then add it with Gmail's own image button in the signature toolbar.
+    </p>
+  </div>
+
+  <aside class="editor-pane">
+    <h2>Your details</h2>
+    <p class="sub">Changes appear instantly in the preview.</p>
+
+    <div class="field">
+      <label for="inputPhoto">Photo</label>
+      <div class="upload-row">
+        <label class="upload-btn" for="inputPhoto">⬆ Upload photo</label>
+        <input type="file" id="inputPhoto" accept="image/*">
+        <span class="upload-hint" id="photoHint">No file chosen</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="inputName">Full name</label>
+      <input type="text" id="inputName" placeholder="e.g. Pranav Regmi">
+    </div>
+
+    <div class="field">
+      <label for="inputTitle">Designation</label>
+      <input type="text" id="inputTitle" placeholder="e.g. Organizational Relationship Manager">
+    </div>
+
+    <div class="field">
+      <label for="inputPhone">Phone</label>
+      <input type="tel" id="inputPhone" placeholder="e.g. 9868730955">
+    </div>
+
+    <div class="field">
+      <label for="inputEmail">Email</label>
+      <input type="email" id="inputEmail" placeholder="e.g. pranav@skillshikshya.com">
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" id="saveBtn">Save changes</button>
+      <button class="btn-secondary" id="revertBtn">Revert to original</button>
+    </div>
+  </aside>
+
+</div>
+
+<div class="modal-overlay" id="cropOverlay">
+  <div class="modal-card">
+    <h3>Position your photo</h3>
+    <p>Drag to reposition, use the slider to zoom</p>
+    <div class="crop-stage" id="cropStage">
+      <img id="cropImg" src="" alt="crop preview">
+    </div>
+    <div class="zoom-row">
+      <span>−</span>
+      <input type="range" id="zoomSlider" min="1" max="3" step="0.01" value="1">
+      <span>+</span>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-secondary" id="cropCancel">Cancel</button>
+      <button class="btn-primary" id="cropApply">Apply</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const DEFAULT_PHOTO = "data:image/svg+xml;utf8," + encodeURIComponent(
+    "<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>" +
+    "<circle cx='100' cy='100' r='100' fill='#e7e9ec'/>" +
+    "<circle cx='100' cy='78' r='36' fill='#c7cbd1'/>" +
+    "<ellipse cx='100' cy='168' rx='58' ry='42' fill='#c7cbd1'/>" +
+    "</svg>"
+  );
+
+  const DEFAULTS = {
+    name: "Pranav Regmi",
+    title: "Organizational Relationship Manager",
+    phone: "9868730955",
+    email: "pranav@skillshikshya.com",
+    photo: DEFAULT_PHOTO
+  };
+
+  let state = Object.assign({}, DEFAULTS);
+
+  const els = {
+    name: document.getElementById('inputName'),
+    title: document.getElementById('inputTitle'),
+    phone: document.getElementById('inputPhone'),
+    email: document.getElementById('inputEmail'),
+    photo: document.getElementById('inputPhoto'),
+    photoHint: document.getElementById('photoHint'),
+    saveBtn: document.getElementById('saveBtn'),
+    revertBtn: document.getElementById('revertBtn'),
+    copyBtn: document.getElementById('copyBtn'),
+    copyStatus: document.getElementById('copyStatus'),
+    sigRoot: document.getElementById('sig-root')
+  };
+
+  // Real logos for every badge, no text anywhere. Facebook, Instagram, YouTube,
+  // and TikTok are hosted at cdn.simpleicons.org (CC0-licensed, built for
+  // hotlinking) in their own true brand colors — recoloring them to white
+  // earlier is what made their proportions look mismatched, since each logo
+  // has different internal padding around its artwork. Kept in their natural
+  // colors, sized identically, they sit evenly. LinkedIn's logo was removed
+  // from that library after a trademark takedown (confirmed on their GitHub
+  // tracker), so it's hosted separately from Wikimedia Commons — same real,
+  // official "in" mark, unaltered as their brand guidelines require.
+  const SOCIAL_ICON_SRC = {
+    facebook:  'https://cdn.simpleicons.org/facebook',
+    instagram: 'https://cdn.simpleicons.org/instagram',
+    linkedin:  'https://commons.wikimedia.org/wiki/Special:FilePath/LinkedIn_logo_initials.png',
+    youtube:   'https://cdn.simpleicons.org/youtube',
+    tiktok:    'https://cdn.simpleicons.org/tiktok'
+  };
+
+  const measureCanvas = document.createElement('canvas');
+  const measureCtx = measureCanvas.getContext('2d');
+  function measureTextWidth(text, font){
+    measureCtx.font = font;
+    // Uppercase + letter-spacing aren't reflected by measureText alone, so we
+    // add the letter-spacing manually per character to match the real render.
+    const letterSpacing = 1.6; // px, matches the designation's CSS letter-spacing
+    const upper = (text || '').toUpperCase();
+    const base = measureCtx.measureText(upper).width;
+    const spacing = Math.max(0, upper.length - 1) * letterSpacing;
+    return base + spacing;
+  }
+
+  function escapeHtml(str){
+    return (str || '').replace(/[&<>"']/g, function(m){
+      return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[m];
+    });
+  }
+
+  function renderSignature(){
+    const socials = [
+      { key: 'facebook',  href: 'https://facebook.com/skillshikshya' },
+      { key: 'instagram', href: 'https://instagram.com/skillshikshya' },
+      { key: 'linkedin',  href: 'https://www.linkedin.com/company/skillshikshya' },
+      { key: 'youtube',   href: 'https://youtube.com/@skillshikshya' },
+      { key: 'tiktok',    href: 'https://tiktok.com/@skillshikshya' }
+    ];
+
+    const socialCells = socials.map(function(s){
+      return '<td style="padding:0 7px 0 0;">' +
+        '<a href="' + s.href + '" target="_blank" style="text-decoration:none;">' +
+        '<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="width:27px; height:27px;"><tr>' +
+        '<td align="center" valign="middle" style="width:27px; height:27px; border-radius:50%; background:#ffffff; border:1px solid #e7e9ec;">' +
+          '<img src="' + SOCIAL_ICON_SRC[s.key] + '" width="16" height="16" alt="' + s.key + '" style="width:16px; height:16px; display:block; border:0; border-radius:3px;">' +
+        '</td>' +
+        '</tr></table></a></td>';
+    }).join('');
+
+    const PHONE_ICON = 'https://raw.githubusercontent.com/feathericons/feather/master/icons/phone.svg';
+    const MAIL_ICON = 'https://raw.githubusercontent.com/feathericons/feather/master/icons/mail.svg';
+    const PIN_ICON = 'https://raw.githubusercontent.com/feathericons/feather/master/icons/map-pin.svg';
+    const LOCATION_TEXT = 'Siddharthamarg, Shankhamul, Kathmandu';
+
+    // The divider must span exactly the photo+info block, not the page —
+    // percentage widths get stretched by Gmail's own container, so we measure
+    // every line in the info column and size the bar in fixed pixels instead.
+    const nameWidth = measureTextWidth(state.name, "700 19px 'Outfit', Arial, Helvetica, sans-serif");
+    const titleWidth = measureTextWidth(state.title, "600 11px 'Outfit', Arial, Helvetica, sans-serif");
+    const phoneWidth = measureTextWidth(state.phone, "400 12.5px 'Outfit', Arial, Helvetica, sans-serif") + 19;
+    const emailWidth = measureTextWidth(state.email, "400 12.5px 'Outfit', Arial, Helvetica, sans-serif") + 19;
+    const locationWidth = measureTextWidth(LOCATION_TEXT, "500 12.5px 'Outfit', Arial, Helvetica, sans-serif") + 19;
+    const infoColumnWidth = Math.max(nameWidth, titleWidth, phoneWidth, emailWidth, locationWidth);
+    const dividerWidth = Math.round(84 + 18 + infoColumnWidth) + 'px';
+
+    // Classic photo-left / details-right layout: same skeleton as the original
+    // template (photo | info block, full-width divider, icons | website),
+    // fully restyled with the Skill Shikshya palette, Outfit type, and the
+    // real hosted icons already proven to survive a Gmail paste.
+    els.sigRoot.innerHTML =
+      '<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="font-family:Outfit,Arial,Helvetica,sans-serif; background:#ffffff;">' +
+        '<tr><td align="left" style="font-size:12px; color:#9a9a9a; font-style:italic; padding-bottom:14px; font-family:Outfit,Arial,Helvetica,sans-serif;">Best regards,</td></tr>' +
+
+        '<tr><td>' +
+          '<table cellpadding="0" cellspacing="0" border="0" role="presentation"><tr>' +
+            '<td valign="middle" style="padding-right:18px;">' +
+              '<img src="' + state.photo + '" alt="' + escapeHtml(state.name) + '" width="84" height="84" style="width:84px; height:84px; border-radius:50%; object-fit:cover; border:2.5px solid #1DA077; display:block;">' +
+            '</td>' +
+            '<td valign="middle">' +
+              '<div style="font-size:19px; font-weight:700; color:#1a1a2e; font-family:Outfit,Arial,Helvetica,sans-serif; letter-spacing:-0.2px; white-space:nowrap;">' + escapeHtml(state.name) + '</div>' +
+              '<div style="padding-top:3px; font-size:11px; font-weight:600; letter-spacing:1.6px; text-transform:uppercase; color:#1DA077; font-family:Outfit,Arial,Helvetica,sans-serif; white-space:nowrap;">' + escapeHtml(state.title) + '</div>' +
+              '<div style="padding-top:12px; font-size:12.5px; color:#444444; font-family:Outfit,Arial,Helvetica,sans-serif; white-space:nowrap;"><img src="' + PHONE_ICON + '" width="13" height="13" alt="phone" style="display:inline-block; vertical-align:middle; margin-right:6px;"><span style="vertical-align:middle;">' + escapeHtml(state.phone) + '</span></div>' +
+              '<div style="padding-top:5px; font-size:12.5px; color:#444444; font-family:Outfit,Arial,Helvetica,sans-serif; white-space:nowrap;"><img src="' + MAIL_ICON + '" width="13" height="13" alt="email" style="display:inline-block; vertical-align:middle; margin-right:6px;"><a href="mailto:' + escapeHtml(state.email) + '" style="color:#444444; text-decoration:none; vertical-align:middle;">' + escapeHtml(state.email) + '</a></div>' +
+              '<div style="padding-top:5px; font-size:12.5px; font-weight:500; font-family:Outfit,Arial,Helvetica,sans-serif; white-space:nowrap;"><img src="' + PIN_ICON + '" width="13" height="13" alt="location" style="display:inline-block; vertical-align:middle; margin-right:6px;"><span style="vertical-align:middle;"><span style="color:#1DA077;">Siddharthamarg</span><span style="color:#1a1a2e;">, Shankhamul, Kathmandu</span></span></div>' +
+            '</td>' +
+          '</tr></table>' +
+        '</td></tr>' +
+
+        '<tr><td style="padding:16px 0;">' +
+          '<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="width:' + dividerWidth + ';"><tr>' +
+            '<td style="width:' + dividerWidth + '; height:3px; line-height:3px; font-size:0; border-radius:2px; background:linear-gradient(90deg,#1DA077 0%, #C33241 50%, #FFE400 100%);">&nbsp;</td>' +
+          '</tr></table>' +
+        '</td></tr>' +
+
+        '<tr><td>' +
+          '<table cellpadding="0" cellspacing="0" border="0" role="presentation"><tr>' +
+            '<td valign="middle">' +
+              '<table cellpadding="0" cellspacing="0" border="0" role="presentation"><tr>' + socialCells + '</tr></table>' +
+            '</td>' +
+            '<td valign="middle" style="padding-left:16px; font-size:13px; font-weight:700; font-family:Outfit,Arial,Helvetica,sans-serif;">' +
+              '<a href="https://skillshikshya.com/" target="_blank" style="text-decoration:none;">' +
+                '<span style="color:#1a1a2e;">skill</span><span style="color:#1DA077;">shikshya</span><span style="color:#FFE400;">.</span><span style="color:#1a1a2e;">com</span>' +
+              '</a>' +
+            '</td>' +
+          '</tr></table>' +
+        '</td></tr>' +
+
+        '<tr><td style="padding-top:18px;">' +
+          '<table cellpadding="0" cellspacing="0" border="0" role="presentation" width="100%"><tr>' +
+            '<td style="border-top:1px solid #eeeeee; font-size:0; line-height:0;">&nbsp;</td>' +
+          '</tr></table>' +
+        '</td></tr>' +
+        '<tr><td align="left" style="padding-top:12px; font-size:9px; color:#b7b7b7; font-family:Arial,Helvetica,sans-serif; line-height:1.6;">' +
+          'The content of this email is confidential and intended for the recipient specified only. It is strictly forbidden to share any part of this message with any third party without written consent of the sender. If you received this by mistake, please reply and delete it. Any attached document is the sole property of Skill Shikshya Pvt. Ltd.' +
+        '</td></tr>' +
+      '</table>';
+  }
+
+  function loadStateIntoInputs(){
+    els.name.value = state.name;
+    els.title.value = state.title;
+    els.phone.value = state.phone;
+    els.email.value = state.email;
+  }
+
+  const cropOverlay = document.getElementById('cropOverlay');
+  const cropStage = document.getElementById('cropStage');
+  const cropImg = document.getElementById('cropImg');
+  const zoomSlider = document.getElementById('zoomSlider');
+  const cropApplyBtn = document.getElementById('cropApply');
+  const cropCancelBtn = document.getElementById('cropCancel');
+
+  const STAGE = 260;
+  let natW = 0, natH = 0, zoomBase = 1, zoomUser = 1, imgLeft = 0, imgTop = 0;
+  let dragging = false, dragStartX = 0, dragStartY = 0, startLeft = 0, startTop = 0;
+  let pendingFileName = '';
+
+  function scaleFactor(){ return zoomBase * zoomUser; }
+
+  function updateImgStyle(){
+    const sf = scaleFactor();
+    const dispW = natW * sf, dispH = natH * sf;
+    cropImg.style.width = dispW + 'px';
+    cropImg.style.height = dispH + 'px';
+    cropImg.style.left = imgLeft + 'px';
+    cropImg.style.top = imgTop + 'px';
+  }
+
+  function clamp(){
+    const sf = scaleFactor();
+    const dispW = natW * sf, dispH = natH * sf;
+    imgLeft = Math.min(0, Math.max(STAGE - dispW, imgLeft));
+    imgTop = Math.min(0, Math.max(STAGE - dispH, imgTop));
+  }
+
+  function openCropModal(dataUrl, fileName){
+    pendingFileName = fileName;
+    const tmp = new Image();
+    tmp.onload = function(){
+      natW = tmp.naturalWidth;
+      natH = tmp.naturalHeight;
+      zoomBase = Math.max(STAGE / natW, STAGE / natH);
+      zoomUser = 1;
+      zoomSlider.value = 1;
+      const dispW = natW * scaleFactor(), dispH = natH * scaleFactor();
+      imgLeft = (STAGE - dispW) / 2;
+      imgTop = (STAGE - dispH) / 2;
+      cropImg.src = dataUrl;
+      updateImgStyle();
+      cropOverlay.classList.add('open');
+    };
+    tmp.src = dataUrl;
+  }
+
+  function closeCropModal(){
+    cropOverlay.classList.remove('open');
+    els.photo.value = '';
+  }
+
+  cropStage.addEventListener('pointerdown', function(e){
+    dragging = true;
+    dragStartX = e.clientX; dragStartY = e.clientY;
+    startLeft = imgLeft; startTop = imgTop;
+    cropStage.setPointerCapture(e.pointerId);
+  });
+  cropStage.addEventListener('pointermove', function(e){
+    if(!dragging) return;
+    imgLeft = startLeft + (e.clientX - dragStartX);
+    imgTop = startTop + (e.clientY - dragStartY);
+    clamp();
+    updateImgStyle();
+  });
+  cropStage.addEventListener('pointerup', function(){ dragging = false; });
+  cropStage.addEventListener('pointerleave', function(){ dragging = false; });
+
+  zoomSlider.addEventListener('input', function(){
+    const oldSf = scaleFactor();
+    const oldDispW = natW * oldSf, oldDispH = natH * oldSf;
+    const centerXRatio = (STAGE / 2 - imgLeft) / oldDispW;
+    const centerYRatio = (STAGE / 2 - imgTop) / oldDispH;
+
+    zoomUser = parseFloat(zoomSlider.value);
+    const newSf = scaleFactor();
+    const newDispW = natW * newSf, newDispH = natH * newSf;
+    imgLeft = STAGE / 2 - centerXRatio * newDispW;
+    imgTop = STAGE / 2 - centerYRatio * newDispH;
+    clamp();
+    updateImgStyle();
+  });
+
+  cropCancelBtn.addEventListener('click', closeCropModal);
+
+  cropApplyBtn.addEventListener('click', function(){
+    const OUT = 320;
+    const canvas = document.createElement('canvas');
+    canvas.width = OUT; canvas.height = OUT;
+    const ctx = canvas.getContext('2d');
+    const sf = scaleFactor();
+    const sx = (0 - imgLeft) / sf;
+    const sy = (0 - imgTop) / sf;
+    const swidth = STAGE / sf;
+    const sheight = STAGE / sf;
+    ctx.drawImage(cropImg, sx, sy, swidth, sheight, 0, 0, OUT, OUT);
+    state.photo = canvas.toDataURL('image/png');
+    els.photoHint.textContent = pendingFileName || 'Photo updated';
+    renderSignature();
+    cropOverlay.classList.remove('open');
+    els.photo.value = '';
+  });
+
+  function bindInputs(){
+    els.name.addEventListener('input', function(){ state.name = els.name.value; renderSignature(); });
+    els.title.addEventListener('input', function(){ state.title = els.title.value; renderSignature(); });
+    els.phone.addEventListener('input', function(){ state.phone = els.phone.value; renderSignature(); });
+    els.email.addEventListener('input', function(){ state.email = els.email.value; renderSignature(); });
+
+    els.photo.addEventListener('change', function(e){
+      const file = e.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev){ openCropModal(ev.target.result, file.name); };
+      reader.readAsDataURL(file);
+    });
+
+    els.saveBtn.addEventListener('click', function(){
+      els.copyStatus.textContent = 'Changes saved ✓';
+      setTimeout(function(){ els.copyStatus.textContent = ''; }, 2200);
+    });
+
+    els.revertBtn.addEventListener('click', function(){
+      state = Object.assign({}, DEFAULTS);
+      loadStateIntoInputs();
+      els.photoHint.textContent = 'No file chosen';
+      renderSignature();
+      els.copyStatus.textContent = 'Reverted to original';
+      setTimeout(function(){ els.copyStatus.textContent = ''; }, 2200);
+    });
+
+    els.copyBtn.addEventListener('click', async function(){
+      const html = els.sigRoot.innerHTML;
+      const text = els.sigRoot.innerText;
+      try{
+        const blobHtml = new Blob([html], { type: 'text/html' });
+        const blobText = new Blob([text], { type: 'text/plain' });
+        await navigator.clipboard.write([
+          new ClipboardItem({ 'text/html': blobHtml, 'text/plain': blobText })
+        ]);
+        els.copyStatus.textContent = 'Copied — paste into Gmail signature ✓';
+      }catch(err){
+        const range = document.createRange();
+        range.selectNode(els.sigRoot);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        els.copyStatus.textContent = 'Selected — press Ctrl/Cmd+C to copy';
+      }
+      setTimeout(function(){ els.copyStatus.textContent = ''; }, 3000);
+    });
+  }
+
+  loadStateIntoInputs();
+  bindInputs();
+  renderSignature();
+</script>
+
+</body>
+</html>
